@@ -1,12 +1,14 @@
 package csp;
 
+import java.util.ArrayList;
+
 public class Field {
 	private char value;
-	char[] domain = new char[26];
+	ArrayList<Character> domain = new ArrayList<Character>();
 
 	public Field(char value) {
 		for (int i = 0; i < 26; i++) {
-			this.domain[i] = (char) (('a') + i);
+			this.domain.add((char) (('a') + i));
 		}
 		
 		this.value = value;
@@ -20,7 +22,7 @@ public class Field {
 		this.value = value;
 	}
 
-	public char[] getDomain() {
+	public ArrayList<Character> getDomain() {
 		return this.domain;
 	}
 }

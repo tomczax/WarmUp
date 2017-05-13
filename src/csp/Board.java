@@ -36,7 +36,7 @@ public class Board {
 
 	public boolean forwardChecking() {
 		int[] cellIndex = chooseUnasignedField();
-		ArrayList<Field> knownVariables = new ArrayList<Field>();
+		Field[][] knownVariables;
 		// if assignment is complete
 		if (cellIndex[0] == -1)
 			return true;
@@ -44,19 +44,23 @@ public class Board {
 		
 		int row = cellIndex[0];
 		int column = cellIndex[1];
+		Field currentVariable = this.board[cellIndex[0]][cellIndex[1]];
+		ArrayList<Character> currentDomain = currentVariable.getDomain();
+//		int row = cellIndex[0];
+//		int column = cellIndex[1];
 		// for each value in domain
-		for (int i = 0; i < this.board[row][column].getDomain().length; i++) {
+		for (int i = 0; i < currentVariable.getDomain().size(); i++) {
 			// is consistent
-			if (checkConstraints(this.board[row][column].getDomain()[i], cellIndex)) {
+			if (checkConstraints(currentVariable.getDomain().get(i), cellIndex)) {
 				// assign a value to the variable
-				this.board[row][column].setValue(this.board[row][column].getDomain()[i]);
+				currentVariable.setValue(currentVariable.getDomain().get(i));
 				// if result is not a failure
 				
 				if (recursiveBacktracking()) {
 					return true;
 				}
-				this.board[row][column].setValue(defaultValue);
-			}
+				currentVariable.setValue(defaultValue);
+			} else {continue; } //not all constraints are satisfied -> test another value
 		}
 		System.out.println("The assignment is not possible");
 		return false;
